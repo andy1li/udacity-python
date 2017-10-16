@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
 from bs4 import BeautifulSoup
-from itertools import product
+from itertools import product, chain
 import pandas as pd
 import expanddouban
 
@@ -45,7 +43,7 @@ def get_categories_locations():
     locations = [li.string for li in locations_lis]
     
     # skip '全部类型' and '全部地区'
-    return categories[1:2], locations[1:2]
+    return categories[1:], locations[1:]
 
 class Movie:
     def __init__(self, name, rate, location, category, info_link, cover_link):
@@ -59,11 +57,10 @@ class Movie:
 if __name__ == '__main__':
     categories, locations = get_categories_locations()
 
-    movie_grid = (get_movies(category, location)
+    movie_lists = (get_movies(category, location)
                   for category, location in product(categories, locations))
 
-    movies = (movie for movie_list in movie_grid
-                    for movie in movie_list)
+    movies = chain.from_iterable(movie_lists)
 
     movies_df = pd.DataFrame([m.__dict__ for m in movies])
     movies_df = movies_df[['name', 'rate', 'location', 'category', 'info_link', 'cover_link']]
