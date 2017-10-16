@@ -28,10 +28,8 @@ Print a message:
 "There are <count> different telephone numbers in the records."
 """
 
-texts_from_nos = [text[0] for text in texts]
-texts_to_nos   = [text[1] for text in texts]
-calls_from_nos = [text[0] for text in calls]
-calls_to_nos   = [text[1] for text in calls]
+texts_from_nos, texts_to_nos, _    = zip(*texts)
+calls_from_nos, calls_to_nos, _, _ = zip(*calls)
 
 count = len(set(texts_from_nos + texts_to_nos + calls_from_nos + calls_to_nos))
 

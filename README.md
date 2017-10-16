@@ -1,2 +1,2 @@
-# My Projects for the Udacity Intro to Python Nanodegree Foundation Program
+# My Projects for the Udacity Python Nanodegree Foundation Program
 

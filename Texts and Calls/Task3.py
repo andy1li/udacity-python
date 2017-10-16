@@ -67,10 +67,10 @@ def get_prefix(number):
 def is_bangalore(number):
     return number.startswith('(080)')
 
-codes = set(get_prefix(to_no)
-            for from_no, to_no, _, _ in calls
-            if is_bangalore(from_no))
-codes = codes.difference(['140', ''])
+codes = {get_prefix(to_no)
+         for from_no, to_no, _, _ in calls
+         if is_bangalore(from_no)}
+codes -= {'140', ''}
 
 # Part A:
 print('The numbers called by people in Bangalore have codes:')
@@ -78,11 +78,14 @@ print(*sorted(codes), sep='\n')
 
 # Part B:
 
-from_bangalore = list(filter(lambda call: is_bangalore(call[0]), calls))
-both_bangalore = list(filter(lambda call: is_bangalore(call[1]), from_bangalore))
+from_bangalore = [c for c in calls
+                    if is_bangalore(c[0])]
 
-proportion = len(both_bangalore) / len(from_bangalore) * 100
+both_bangalore = [c for c in from_bangalore
+                    if is_bangalore(c[1])]
 
-message = f'{proportion:.2f} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.'
+proportion = len(both_bangalore) / len(from_bangalore)
+
+message = f'{proportion:.2%} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore.'
 print(message)
 
